@@ -1,0 +1,7 @@
+---
+
+- name: Install nginx.
+  include_tasks: nginx.yml
+
+- name: Test nginx-php env.
+  include_tasks: php_test.yml

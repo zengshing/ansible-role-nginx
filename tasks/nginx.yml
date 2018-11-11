@@ -1,0 +1,42 @@
+---
+
+- name: Ensure that config directory is exists
+  file: state=directory path="{{ software_dir }}"
+
+- name: Upload nginx packages.
+  copy:
+    remote_src: false
+    src: "{{ nginx_packages }}"
+    dest: "{{ software_dir }}"
+
+- name: Unarchive nignx packages.
+  unarchive:
+    remote_src: false
+    src: "{{ software_dir }}{{ nginx_packages }}"
+    dest: /opt/ECloud/software
+
+- name: Compiled nginx source codes.
+  shell: |
+         cd /opt/ECloud/software/nginx.1.8.0;
+         ./configure --prefix=/opt/ECloud/kvm-console-proxy/nginx --with-http_secure_link_module;
+         make -j 2;make install
+
+- name: Configure nginx for php-fpm.
+  copy:
+    remote_src: false
+    src: nginx.conf
+    dest: /opt/ECloud/kvm-api-rpc-proxy/nginx/conf/nginx.conf
+
+- name: Configure nginx fastcgi_params.
+  copy:
+    remote_src: false
+    src: fastcgi_params.conf
+    dest: /opt/ECloud/kvm-api-rpc-proxy/nginx/conf/fastcgi_params
+
+- name: Configure nginx service.
+  copy:
+    remote_src: false
+    src: nginx.service
+    dest: /usr/lib/systemd/system/nginx.service
+  notify:
+    - start nginx

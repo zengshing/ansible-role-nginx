@@ -1,0 +1,6 @@
+---
+
+nginx_package: nginx-1.8.0.tar.gz
+
+php_connection_retries: 5
+php_connection_delay: 2
