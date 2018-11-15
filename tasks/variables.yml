@@ -1,0 +1,9 @@
+---
+
+- name: Include OS-special variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Define nginx depedent packages
+  set_fact:
+    nginx_depedent_packages: "{{ __nginx_depedent_packages|list }}"
+  when: nginx_depedent_packages is not defined

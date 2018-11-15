@@ -1,42 +1,42 @@
 ---
 
-- name: Ensure that config directory is exists
-  file: state=directory path="{{ software_dir }}"
-
-- name: Upload nginx packages.
-  copy:
-    remote_src: false
-    src: "{{ nginx_packages }}"
-    dest: "{{ software_dir }}"
-
 - name: Unarchive nignx packages.
   unarchive:
     remote_src: false
-    src: "{{ software_dir }}{{ nginx_packages }}"
-    dest: /opt/ECloud/software
+    src: "{{ nginx_packages }}"
+    dest: /usr/local/src
 
-- name: Compiled nginx source codes.
-  shell: |
-         cd /opt/ECloud/software/nginx.1.8.0;
-         ./configure --prefix=/opt/ECloud/kvm-console-proxy/nginx --with-http_secure_link_module;
-         make -j 2;make install
+- name: create nginx install directory
+  file:
+    path: "{{ nginx_install_dir }}"
+    state: directory
 
-- name: Configure nginx for php-fpm.
-  copy:
-    remote_src: false
-    src: nginx.conf
-    dest: /opt/ECloud/kvm-api-rpc-proxy/nginx/conf/nginx.conf
+- name: install nginx depedent packages.
+  yum: name="{{ item }}" state=present
+  loop:
+    - "{{ nginx_depedent_packages }}"
 
-- name: Configure nginx fastcgi_params.
-  copy:
-    remote_src: false
-    src: fastcgi_params.conf
-    dest: /opt/ECloud/kvm-api-rpc-proxy/nginx/conf/fastcgi_params
+- name: Compiled nginx file.
+  command: |
+         ./configure --prefix={{ nginx_install_dir}} --user=nginx --group=nginx \
+         --with-http_stub_status_module --with-http_ssl_module --with-pcre;
+         make -j{{ ansible_processor_cores|default(1) + 1 }};
+  args:
+    chdir: /usr/local/src/nginx-{{ nginx_verison }}
 
-- name: Configure nginx service.
-  copy:
-    remote_src: false
-    src: nginx.service
-    dest: /usr/lib/systemd/system/nginx.service
-  notify:
-    - start nginx
+- name: Instal nginx.
+  command: make install
+  args:
+    chdir: /usr/local/src/nginx-{{ nginx_verison }}
+
+- name: Ensure nginx service can running.
+  command: ./nginx
+  args:
+    chdir: {{ nginx_install_dir }}sbin
+  register: result
+
+- name: Ensure nginx service can running.
+  command: ./nginx -s stop 
+  args:
+    chdir: {{ nginx_install_dir }}sbin
+  when: result.changed

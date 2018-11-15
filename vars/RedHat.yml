@@ -1,0 +1,12 @@
+---
+
+__nginx_depedent_packages: 
+  - openssl
+  - openssl-devel
+  - pcre
+  - pcre-devel
+  - gcc
+  - gcc-c++
+  - zlib
+  - zlib-devel
+  - net-tools

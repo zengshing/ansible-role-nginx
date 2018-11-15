@@ -1,4 +1,11 @@
 ---
+
+- name: Check php service.
+  shell: netstat -antp |grep {{ php_listen_port }}
+  ignore_errors: yes
+  changed_when: false
+  register: php_listen
+
 - name: Wait for Jenkins to start up before proceeding.
   shell: "curl -D - --silent --max-time 5 http://127.0.0.1/test.php"
   args:
@@ -7,5 +14,5 @@
   until: (result.stdout.find("hello worlld") != -1)
   retries: "{{ php_connection_retries }}"
   delay: "{{ php_connection_delay }}"
-  changed_when: false
+  changed_when: php_listen.changed_when
   check_mode: no

@@ -1,6 +1,10 @@
 ---
 
-nginx_package: nginx-1.8.0.tar.gz
+nginx_verison: 1.8.0
+nginx_package: nginx-{{ nginx_verison }}.tar.gz
+nginx_install_dir: /opt/nginx/
 
 php_connection_retries: 5
 php_connection_delay: 2
+php_listen_addr: 127.0.0.1
+php_listen_port: 9002

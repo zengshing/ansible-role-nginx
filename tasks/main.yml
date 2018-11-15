@@ -1,5 +1,8 @@
 ---
 
+- name: Include OS-special variables.
+  include_tasks: variables.yml
+
 - name: Install nginx.
   include_tasks: nginx.yml
 
