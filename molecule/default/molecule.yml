@@ -28,6 +28,10 @@ provisioner:
     converge: ${MOLECULE_PLAYBOOK:-playbook.yml}
 scenario:
   name: default
+  converge_sequence:
+    - dependency
+    - prepare
+    - converge
 verifier:
   name: testinfra
   lint:
