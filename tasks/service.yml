@@ -4,19 +4,19 @@
   template:
     remote_src: false
     src: nginx.conf
-    dest: {{ nginx_install_dir }}conf/nginx.conf
+    dest: "{{ nginx_install_dir }}conf/nginx.conf"
 
 - name: Configure nginx fastcgi_params.
   copy:
     remote_src: false
     src: fastcgi_params.conf
-    dest: {{ nginx_install_dir }}conf/fastcgi_params
+    dest: "{{ nginx_install_dir }}conf/fastcgi_params"
 
 - name: Copy test php file.
   copy:
     remote_src: false
     src: test.php
-    dest: {{ nginx_install_dir }}html/test.php
+    dest: "{{ nginx_install_dir }}html/test.php"
 
 - name: Configure nginx service.
   copy:

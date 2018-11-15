@@ -1,6 +1,6 @@
 ---
 
-__nginx_depedent_packages: 
+__nginx_depedent_packages:
   - openssl
   - openssl-devel
   - pcre
