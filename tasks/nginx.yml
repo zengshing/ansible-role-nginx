@@ -3,7 +3,7 @@
 - name: Unarchive nignx packages.
   unarchive:
     remote_src: false
-    src: "{{ nginx_packages }}"
+    src: "{{ nginx_package }}"
     dest: /usr/local/src
 
 - name: create nginx install directory
