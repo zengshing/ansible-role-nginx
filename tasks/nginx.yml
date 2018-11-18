@@ -18,10 +18,15 @@
 
 - name: Compiled nginx file.
   command: |
-         ./configure --prefix={{ nginx_install_dir}}
+         ./configure --prefix={{ nginx_install_dir}}  --with-pcre --with-http_stub_status_module --with-http_ssl_module
   args:
     chdir: /usr/local/src/nginx-{{ nginx_verison }}
 
+- name: Make nginx file.
+  command: make -j{{ ansible_processor_cores|default(1) + 1 }}
+  args:
+    chdir: /usr/local/src/nginx-{{ nginx_verison }}
+    
 - name: Instal nginx.
   command: make install
   args:
