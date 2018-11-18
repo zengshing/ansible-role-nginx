@@ -6,6 +6,11 @@
     src: nginx.conf
     dest: "{{ nginx_install_dir }}conf/nginx.conf"
 
+- name: Ensure nginx service can running.
+  command: ./nginx -t {{ nginx_install_dir }}conf/nginx.conf
+  args:
+    chdir: "{{ nginx_install_dir }}sbin"
+
 - name: Configure nginx fastcgi_params.
   copy:
     remote_src: false
