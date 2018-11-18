@@ -18,8 +18,7 @@
 
 - name: Compiled nginx file.
   command: |
-         ./configure --prefix={{ nginx_install_dir}};
-         make -j{{ ansible_processor_cores|default(1) + 1 }};
+         ./configure --prefix={{ nginx_install_dir}}
   args:
     chdir: /usr/local/src/nginx-{{ nginx_verison }}
 
