@@ -5,7 +5,7 @@
   ignore_errors: yes
   register: php_listen
 
-- name: Wait for Jenkins to start up before proceeding.
+- name: Test php page.
   shell: "curl -D - --silent --max-time 5 http://127.0.0.1/test.php"
   args:
     warn: no
@@ -13,5 +13,5 @@
   until: (result.stdout.find("hello worlld") != -1)
   retries: "{{ php_connection_retries }}"
   delay: "{{ php_connection_delay }}"
-  changed_when: php_listen.changed_when
+  changed_when: php_listen.changed
   check_mode: no
