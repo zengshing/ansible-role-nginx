@@ -19,7 +19,7 @@
 - name: Compiled nginx file.
   command: |
          ./configure --prefix={{ nginx_install_dir}} --user=nginx --group=nginx \
-         --with-http_stub_status_module --with-http_ssl_module --with-pcre;
+         --with-http_stub_status_module --with-http_ssl_module;
          make -j{{ ansible_processor_cores|default(1) + 1 }};
   args:
     chdir: /usr/local/src/nginx-{{ nginx_verison }}

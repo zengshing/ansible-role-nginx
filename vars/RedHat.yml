@@ -9,4 +9,5 @@ __nginx_depedent_packages:
   - gcc-c++
   - zlib
   - zlib-devel
+  - libtool
   - net-tools
