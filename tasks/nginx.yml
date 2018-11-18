@@ -18,7 +18,7 @@
 
 - name: Compiled nginx file.
   command: |
-         ./configure --prefix={{ nginx_install_dir}} --with-pcre --with-http_stub_status_module --with-http_ssl_module;
+         ./configure --prefix={{ nginx_install_dir}};
          make -j{{ ansible_processor_cores|default(1) + 1 }};
   args:
     chdir: /usr/local/src/nginx-{{ nginx_verison }}
