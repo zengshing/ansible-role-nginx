@@ -13,12 +13,14 @@
 
 - name: install nginx depedent packages.
   yum: name="{{ item }}" state=present
-  loop:
-    - "{{ nginx_depedent_packages }}"
+  loop: "{{ nginx_depedent_packages }}"
 
 - name: Compiled nginx file.
-  command: |
-         ./configure --prefix={{ nginx_install_dir}}  --with-pcre --with-http_stub_status_module --with-http_ssl_module
+  command: >-
+         ./configure --prefix={{ nginx_install_dir}}  --with-pcre 
+         --with-http_stub_status_module --with-http_ssl_module
+         --with-http_secure_link_module
+         --add-module=/opt/install/websockify-nginx-module-master 
   args:
     chdir: /usr/local/src/nginx-{{ nginx_verison }}
 
@@ -35,11 +37,11 @@
 - name: Ensure nginx service can running.
   command: ./nginx
   args:
-    chdir: "{{ nginx_install_dir }}sbin"
+    chdir: "{{ nginx_install_dir }}/sbin"
   register: result
 
 - name: Ensure nginx service can running.
   command: ./nginx -s stop
   args:
-    chdir: "{{ nginx_install_dir }}sbin"
+    chdir: "{{ nginx_install_dir }}/sbin"
   when: result.changed

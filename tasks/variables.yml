@@ -5,5 +5,5 @@
 
 - name: Define nginx depedent packages
   set_fact:
-    nginx_depedent_packages: "{{ __nginx_depedent_packages|list }}"
+    nginx_depedent_packages: "{{ __nginx_depedent_packages }}"
   when: nginx_depedent_packages is not defined
